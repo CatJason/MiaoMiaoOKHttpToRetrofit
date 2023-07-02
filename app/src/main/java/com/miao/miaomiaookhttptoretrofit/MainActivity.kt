@@ -2,6 +2,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.miao.miaomiaookhttptoretrofit.AuthInterceptor
 import com.miao.miaomiaookhttptoretrofit.R
+import com.miao.miaomiaookhttptoretrofit.interceptor.CacheInterceptor
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                     .connectTimeout(TIME, TimeUnit.SECONDS)
                     .readTimeout(TIME, TimeUnit.SECONDS)
                     .writeTimeout(TIME, TimeUnit.SECONDS)
+                    .addInterceptor(CacheInterceptor())
                     .addInterceptor(authInterceptor)
                     .addInterceptor(loggingInterceptor)
                     .build()
