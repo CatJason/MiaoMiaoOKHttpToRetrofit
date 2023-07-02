@@ -101,6 +101,22 @@ class MainActivity : AppCompatActivity() {
             // 发送请求...
          */
 
+        /*  使用ByteArrayBody的示例代码
+            // 创建一个字节数组
+            byte[] data = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+
+            // 创建ByteArrayBody对象，并指定媒体类型
+            RequestBody requestBody = ByteArrayBody.create(data, MediaType.parse("application/octet-stream"));
+
+            // 创建请求并发送到服务器
+            Request request = new Request.Builder()
+                    .url("https://example.com/upload")
+                    .post(requestBody)
+                    .build();
+
+            // 发送请求...
+         */
+
         val headers = Headers.Builder().apply {
             add("name", "value")
             add("Content-Type", "application/json")
