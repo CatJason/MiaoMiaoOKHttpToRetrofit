@@ -1,18 +1,25 @@
-package com.miao.miaomiaookhttptoretrofit
-
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
-import okhttp3.*
+import com.miao.miaomiaookhttptoretrofit.R
+import okhttp3.Headers
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.IOException
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.HeaderMap
+import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         const val TIME = 5L
     }
 
@@ -21,15 +28,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    fun okHttpPost() {
-        val url = "https://example.com/api/users"
+    fun retrofitHttpPost() {
+        val url = "https://example.com/api/"
         if (url.isBlank()) {
             return
         }
         url.toHttpUrlOrNull() ?: return
 
-        val mediaType = "application/json; charset=utf-8".toMediaType()
         val jsonString = ""
+        val mediaType = "application/json; charset=utf-8".toMediaType()
         val requestBody = jsonString.toRequestBody(mediaType)
 
         val headers = Headers.Builder().apply {
@@ -38,26 +45,34 @@ class MainActivity : AppCompatActivity() {
             add("Accept", "application/json")
         }.build()
 
-        val request = Request.Builder()
-            .headers(headers)
-            .post(requestBody)
-            .url(url)
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .client(
+                OkHttpClient.Builder()
+                    .connectTimeout(TIME, TimeUnit.SECONDS)
+                    .readTimeout(TIME, TimeUnit.SECONDS)
+                    .writeTimeout(TIME, TimeUnit.SECONDS)
+                    .build()
+            )
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val callback = object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+        val service = retrofit.create(ApiService::class.java)
+        val call = service.postData(headers, requestBody)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // 处理请求失败的情况
             }
 
-            override fun onResponse(call: Call, response: Response) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                // 处理请求成功的情况
             }
-        }
-
-        OkHttpClient.Builder()
-            .connectTimeout(TIME, TimeUnit.SECONDS)
-            .readTimeout(TIME, TimeUnit.SECONDS)
-            .writeTimeout(TIME, TimeUnit.SECONDS)
-            .build()
-            .newCall(request)
-            .enqueue(callback)
+        })
     }
+}
+
+interface ApiService {
+    @POST("users")
+    fun postData(@HeaderMap headers: Headers, @Body requestBody: RequestBody): Call<ResponseBody>
 }
