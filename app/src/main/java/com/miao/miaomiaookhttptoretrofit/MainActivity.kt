@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.miao.miaomiaookhttptoretrofit.AuthInterceptor
 import com.miao.miaomiaookhttptoretrofit.R
 import com.miao.miaomiaookhttptoretrofit.interceptor.CacheInterceptor
+import com.miao.miaomiaookhttptoretrofit.interceptor.RetryInterceptor
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : AppCompatActivity() {
     companion object {
         const val TIME = 5L
+        const val RETRY_TIME = 3
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                     .connectTimeout(TIME, TimeUnit.SECONDS)
                     .readTimeout(TIME, TimeUnit.SECONDS)
                     .writeTimeout(TIME, TimeUnit.SECONDS)
+                    .addInterceptor(RetryInterceptor(RETRY_TIME))
                     .addInterceptor(CacheInterceptor())
                     .addInterceptor(authInterceptor)
                     .addInterceptor(loggingInterceptor)
