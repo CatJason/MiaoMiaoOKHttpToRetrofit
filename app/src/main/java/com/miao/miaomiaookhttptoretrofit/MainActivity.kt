@@ -1,13 +1,11 @@
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.miao.miaomiaookhttptoretrofit.AuthInterceptor
 import com.miao.miaomiaookhttptoretrofit.R
-import okhttp3.Headers
+import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,6 +48,9 @@ class MainActivity : AppCompatActivity() {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
+        val authToken = "your_auth_token"
+        val authInterceptor = AuthInterceptor(authToken)
+
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
             .client(
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                     .connectTimeout(TIME, TimeUnit.SECONDS)
                     .readTimeout(TIME, TimeUnit.SECONDS)
                     .writeTimeout(TIME, TimeUnit.SECONDS)
+                    .addInterceptor(authInterceptor)
                     .addInterceptor(loggingInterceptor)
                     .build()
             )
