@@ -66,6 +66,25 @@ class MainActivity : AppCompatActivity() {
          * 当你需要发送文件、字节数组、输入流等二进制数据作为请求体时，可以使用FileBody、ByteArrayBody或StreamBody，它们是RequestBody的具体子类，分别用于处理不同的二进制数据类型。
          */
 
+        /*  使用JsonBody的示例代码
+            // 创建一个JSON对象，包含键值对数据
+            JSONObject json = new JSONObject();
+            json.put("name", "John Doe");
+            json.put("age", 30);
+            json.put("email", "john@example.com");
+
+            // 创建JsonBody对象
+            RequestBody requestBody = JsonBody.create(json.toString());
+
+            // 创建请求并发送到服务器
+            Request request = new Request.Builder()
+                    .url("https://example.com/api")
+                    .post(requestBody)
+                    .build();
+
+            // 发送请求...
+         */
+
         val headers = Headers.Builder().apply {
             add("name", "value")
             add("Content-Type", "application/json")
