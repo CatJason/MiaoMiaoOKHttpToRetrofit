@@ -85,6 +85,22 @@ class MainActivity : AppCompatActivity() {
             // 发送请求...
          */
 
+        /*  使用FileBody的示例代码
+            // 创建File对象或指定文件路径
+            File file = new File("path/to/file.jpg");
+
+            // 创建FileBody对象，并指定媒体类型
+            RequestBody requestBody = FileBody.create(file, MediaType.parse("image/jpeg"));
+
+            // 创建请求并发送到服务器
+            Request request = new Request.Builder()
+                    .url("https://example.com/upload")
+                    .post(requestBody)
+                    .build();
+
+            // 发送请求...
+         */
+
         val headers = Headers.Builder().apply {
             add("name", "value")
             add("Content-Type", "application/json")
