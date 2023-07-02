@@ -39,7 +39,32 @@ class MainActivity : AppCompatActivity() {
 
         val jsonString = ""
         val mediaType = "application/json; charset=utf-8".toMediaType()
+
+        /**
+         * "application/json"：JSON数据的媒体类型。
+         * "application/xml"：XML数据的媒体类型。
+         * "application/x-www-form-urlencoded"：URL编码表单数据的媒体类型。
+         * "multipart/form-data"：多部分表单数据的媒体类型。
+         * "text/plain"：纯文本数据的媒体类型。
+         * "image/jpeg"：JPEG图片的媒体类型。
+         * "image/png"：PNG图片的媒体类型。
+         * "audio/mp3"：MP3音频的媒体类型。
+         * "video/mp4"：MP4视频的媒体类型。
+         */
+
         val requestBody = jsonString.toRequestBody(mediaType)
+
+        /**
+         * RequestBody
+         * 当你需要发送自定义的请求体数据，并且以上具体子类无法满足你的需求时，可以通过继承RequestBody类来实现自定义的RequestBody子类。
+         * RequestBody的子类
+         * FormBody或MultipartBody
+         * 当你需要发送简单的文本或键值对数据作为请求体时，可以使用FormBody或MultipartBody，提供了方便的方法来构建表单数据或多部分数据。
+         * JsonBody
+         * 当你需要发送JSON格式数据作为请求体时，可以使用JsonBody，它是RequestBody的具体子类，专门用于处理JSON数据。
+         * FileBody、ByteArrayBody或StreamBody
+         * 当你需要发送文件、字节数组、输入流等二进制数据作为请求体时，可以使用FileBody、ByteArrayBody或StreamBody，它们是RequestBody的具体子类，分别用于处理不同的二进制数据类型。
+         */
 
         val headers = Headers.Builder().apply {
             add("name", "value")
