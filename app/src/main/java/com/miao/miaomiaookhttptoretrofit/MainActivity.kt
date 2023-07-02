@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             add("Accept", "application/json")
         }.build()
 
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
             .client(
@@ -52,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                     .connectTimeout(TIME, TimeUnit.SECONDS)
                     .readTimeout(TIME, TimeUnit.SECONDS)
                     .writeTimeout(TIME, TimeUnit.SECONDS)
+                    .addInterceptor(loggingInterceptor)
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())
