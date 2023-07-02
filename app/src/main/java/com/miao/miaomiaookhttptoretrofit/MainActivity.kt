@@ -117,6 +117,22 @@ class MainActivity : AppCompatActivity() {
             // 发送请求...
          */
 
+        /*  使用StreamBody的示例代码
+            // 创建一个输入流
+            InputStream inputStream = new FileInputStream("path/to/file.jpg");
+
+            // 创建StreamBody对象，并指定媒体类型
+            RequestBody requestBody = StreamBody.create(inputStream, MediaType.parse("image/jpeg"));
+
+            // 创建请求并发送到服务器
+            Request request = new Request.Builder()
+                    .url("https://example.com/upload")
+                    .post(requestBody)
+                    .build();
+
+            // 发送请求...
+         */
+
         val headers = Headers.Builder().apply {
             add("name", "value")
             add("Content-Type", "application/json")
